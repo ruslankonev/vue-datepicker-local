@@ -173,7 +173,7 @@ export default {
       this.show = false
     },
     snd () {
-      this.vi(new Date());
+      this.dates = this.vi(new Date());
     }
   },
   mounted () {
