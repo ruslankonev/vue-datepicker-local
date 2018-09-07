@@ -40,6 +40,7 @@
       <div :class="`${pre}-title`">{{local.secondTip}}</div>
       <a v-for="(j,i) in 60" @click="is($event)&&(showSeconds=false,second=i,ok('h'))" :class="[status(year,month,day,hour,minute,i,'YYYYMMDDHHmmss')]" :key="i">{{i}}</a>
     </div>
+    <a :class="`${pre}-now-btn`" v-show="showNowButton" @click="reset">Now</a>
   </div>
   <div :class="`${pre}-foot`" v-if="m==='H'">
     <div :class="`${pre}-hour`">
@@ -49,7 +50,6 @@
       <span>:</span>
       <a :title="local.secondTip" @click="showSeconds=!showSeconds,showHours=showMinutes=false" :class="{on:showSeconds}">{{second|dd}}</a>
     </div>
-    <a :class="`${pre}-now-btn`" v-show="showNowButton" @click="reset">Now</a>
   </div>
 </div>
 </template>
@@ -448,7 +448,7 @@ export default {
   font-weight: bold;
 }
 
-.calendar-foot .calendar-now-btn {
+.calendar-now-btn {
   color: #666;
   font-weight: bold;
   cursor: pointer;
@@ -459,7 +459,7 @@ export default {
   font-size: 16px;
 }
 
-.calendar-foot .calendar-now-btn:hover {
+.calendar-now-btn:hover {
   color: #1284e7;
 }
 </style>
