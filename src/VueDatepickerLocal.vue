@@ -9,10 +9,7 @@
         <vue-datepicker-local-calendar v-model="dates[1]" :right="true"></vue-datepicker-local-calendar>
       </template>
       <template v-else>
-        <vue-datepicker-local-calendar v-model="dates[0]"></vue-datepicker-local-calendar>
-      </template>
-      <template v-if="showNowButton">
-        <button @click.prevent.stop="snd" class="datepicker-btn">Now</button>
+        <vue-datepicker-local-calendar v-model="dates[0]" :show-now-button="showNowButton"></vue-datepicker-local-calendar>
       </template>
       <div v-if="showButtons" class="datepicker__buttons">
         <button @click.prevent.stop="cancel" class="datepicker__button-cancel">{{this.local.cancelTip}}</button>
@@ -80,7 +77,7 @@ export default {
     },
     showNowButton: {
       type: Boolean,
-      default: true
+      default: false
     },
     dateRangeSelect: [Function]
   },
@@ -171,9 +168,6 @@ export default {
     cancel () {
       this.$emit('cancel')
       this.show = false
-    },
-    snd () {
-      this.dates = this.vi(new Date());
     }
   },
   mounted () {

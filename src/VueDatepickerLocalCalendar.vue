@@ -49,6 +49,7 @@
       <span>:</span>
       <a :title="local.secondTip" @click="showSeconds=!showSeconds,showHours=showMinutes=false" :class="{on:showSeconds}">{{second|dd}}</a>
     </div>
+    <a :class="`${pre}-now-btn`" v-show="showNowButton" @click="reset">Now</a>
   </div>
 </div>
 </template>
@@ -59,7 +60,8 @@ export default {
   props: {
     value: null,
     left: false,
-    right: false
+    right: false,
+    showNowButton: false
   },
   data () {
     const time = this.get(this.value)
@@ -236,6 +238,16 @@ export default {
       }
       $this.$emit('input', _time)
       $this.$parent.ok(info === 'h')
+    },
+    reset () {
+      const $this = this
+      const _now = $this.get(new Date())
+      $this.year = _now.year
+      $this.month = _now.month
+      $this.day = _now.day
+      $this.hour = _now.hour
+      $this.minute = _now.minute
+      $this.second = _now.second
     }
   },
   mounted () {
@@ -434,6 +446,21 @@ export default {
   background: #fff;
   text-align: center;
   font-weight: bold;
+}
+
+.calendar-foot .calendar-now-btn {
+  color: #666;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  position: absolute;
+  padding: 0 5px;
+  font-size: 16px;
+}
+
+.calendar-foot .calendar-now-btn:hover {
+  color: #1284e7;
 }
 </style>
 ﻿
