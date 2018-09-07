@@ -40,10 +40,10 @@
       <div :class="`${pre}-title`">{{local.secondTip}}</div>
       <a v-for="(j,i) in 60" @click="is($event)&&(showSeconds=false,second=i,ok('h'))" :class="[status(year,month,day,hour,minute,i,'YYYYMMDDHHmmss')]" :key="i">{{i}}</a>
     </div>
-    <a :class="`${pre}-now-btn`" v-show="showNowButton" @click="reset">Now</a>
   </div>
-  <div :class="`${pre}-foot`" v-if="m==='H'">
-    <div :class="`${pre}-hour`">
+  <div :class="`${pre}-foot`" v-if="m==='H' || showNowButton">
+    <a :class="`${pre}-now-btn`" v-show="showNowButton" @click="reset">Now</a>
+    <div :class="`${pre}-hour`" v-if="m==='H'">
       <a :title="local.hourTip" @click="showHours=!showHours,showMinutes=showSeconds=false" :class="{on:showHours}">{{hour|dd}}</a>
       <span>:</span>
       <a :title="local.minuteTip" @click="showMinutes=!showMinutes,showHours=showSeconds=false" :class="{on:showMinutes}">{{minute|dd}}</a>
@@ -451,12 +451,12 @@ export default {
 .calendar-now-btn {
   color: #666;
   font-weight: bold;
+  font-size: 12px;
   cursor: pointer;
-  display: inline-block;
+  display: block;
   text-align: center;
-  position: absolute;
-  padding: 0 5px;
-  font-size: 16px;
+  padding: 0 2px;
+  position: relative;
 }
 
 .calendar-now-btn:hover {
