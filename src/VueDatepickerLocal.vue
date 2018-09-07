@@ -11,6 +11,9 @@
       <template v-else>
         <vue-datepicker-local-calendar v-model="dates[0]"></vue-datepicker-local-calendar>
       </template>
+      <template v-if="showNowButton">
+        <button @click.prevent.stop="snd" class="datepicker-btn">Now</button>
+      </template>
       <div v-if="showButtons" class="datepicker__buttons">
         <button @click.prevent.stop="cancel" class="datepicker__button-cancel">{{this.local.cancelTip}}</button>
         <button @click.prevent.stop="submit" class="datepicker__button-select">{{this.local.submitTip}}</button>
@@ -59,21 +62,25 @@ export default {
       default () {
         return {
           dow: 1, // Monday is the first day of the week
-          hourTip: '选择小时', // tip of select hour
-          minuteTip: '选择分钟', // tip of select minute
-          secondTip: '选择秒数', // tip of select second
-          yearSuffix: '年', // format of head
-          monthsHead: '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'), // months of head
-          months: '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'), // months of panel
-          weeks: '一_二_三_四_五_六_日'.split('_'), // weeks
-          cancelTip: '取消', // default text for cancel button
-          submitTip: '确定' // default text for submit button
+          hourTip: 'Select Hour', // tip of select hour
+          minuteTip: 'Select Minute', // tip of select minute
+          secondTip: 'Select Second', // tip of select second
+          yearSuffix: '', // format of head
+          monthsHead: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'), // months of head
+          months: 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'), // months of panel
+          weeks: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'), // weeks
+          cancelTip: 'Cancel', // default text for cancel button
+          submitTip: 'Confirm' // default text for submit button
         }
       }
     },
     showButtons: {
       type: Boolean,
       default: false
+    },
+    showNowButton: {
+      type: Boolean,
+      default: true
     },
     dateRangeSelect: [Function]
   },
@@ -164,6 +171,9 @@ export default {
     cancel () {
       this.$emit('cancel')
       this.show = false
+    },
+    snd () {
+      this.vi(new Date());
     }
   },
   mounted () {
