@@ -41,14 +41,17 @@
       <a v-for="(j,i) in 60" @click="is($event)&&(showSeconds=false,second=i,ok('h'))" :class="[status(year,month,day,hour,minute,i,'YYYYMMDDHHmmss')]" :key="i">{{i}}</a>
     </div>
   </div>
-  <div :class="`${pre}-foot`" v-if="m==='H' || showNowButton">
-    <a :class="`${pre}-now-btn`" v-show="showNowButton" @click="reset">Now</a>
+  <div :class="`${pre}-foot`" v-if="m==='H' || showTodayCurrentButton">
     <div :class="`${pre}-hour`" v-if="m==='H'">
       <a :title="local.hourTip" @click="showHours=!showHours,showMinutes=showSeconds=false" :class="{on:showHours}">{{hour|dd}}</a>
       <span>:</span>
       <a :title="local.minuteTip" @click="showMinutes=!showMinutes,showHours=showSeconds=false" :class="{on:showMinutes}">{{minute|dd}}</a>
       <span>:</span>
       <a :title="local.secondTip" @click="showSeconds=!showSeconds,showHours=showMinutes=false" :class="{on:showSeconds}">{{second|dd}}</a>
+    </div>
+    <div :class="`${pre}-buttons`" v-show="showTodayCurrentButton" >
+      <a :class="`${pre}-today-btn`" @click="resetToToday">{{local.todayTip}}</a>
+      <a :class="`${pre}-current-btn`" @click="resetToCurrent">{{local.currentTip}}</a>
     </div>
   </div>
 </div>
@@ -61,7 +64,7 @@ export default {
     value: null,
     left: false,
     right: false,
-    showNowButton: false
+    showTodayCurrentButton: false
   },
   data () {
     const time = this.get(this.value)
@@ -179,6 +182,7 @@ export default {
       return parseInt(num / 1000)
     },
     status (year, month, day, hour, minute, second, format) {
+      const today = new Date()
       const $this = this
       const maxDay = new Date(year, month + 1, 0).getDate()
       const time = new Date(year, month, day > maxDay ? maxDay : day, hour, minute, second)
@@ -197,6 +201,8 @@ export default {
       classObj[`${$this.pre}-date-disabled`] = ($this.right && t < $this.start) || $this.$parent.disabledDate(time, format)
       classObj[`${$this.pre}-date-on`] = ($this.left && t > $this.start) || ($this.right && t < $this.end)
       classObj[`${$this.pre}-date-selected`] = flag
+      // classObj[`${$this.pre}-date-today`] = (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day)
+      classObj[`${$this.pre}-date-today`] = f(today, format) === f(time, format)
       return classObj
     },
     nm () {
@@ -239,9 +245,19 @@ export default {
       $this.$emit('input', _time)
       $this.$parent.ok(info === 'h')
     },
-    reset () {
+    resetToToday () {
       const $this = this
       const _now = $this.get(new Date())
+      $this.year = _now.year
+      $this.month = _now.month
+      $this.day = _now.day
+      $this.hour = _now.hour
+      $this.minute = _now.minute
+      $this.second = _now.second
+    },
+    resetToCurrent () {
+      const $this = this
+      const _now = $this.get($this.value)
       $this.year = _now.year
       $this.month = _now.month
       $this.day = _now.day
@@ -378,6 +394,13 @@ export default {
   background: #1284e7;
 }
 
+.calendar-date-today:not(.calendar-date-selected),
+.calendar-date-today:not(.calendar-date-selected):hover {
+  color: #1284e7;
+  font-weight: bold;
+  border: 1px solid #1284e7;
+}
+
 .calendar-date-disabled {
   cursor: not-allowed !important;
   color: #bcbcbc !important;
@@ -448,7 +471,15 @@ export default {
   font-weight: bold;
 }
 
-.calendar-now-btn {
+.calendar-foot .calendar-buttons {
+  display: block;
+  text-align: center;
+  padding: 0 5px;
+  position: relative;
+  margin-top: 5px;
+}
+
+.calendar-foot .calendar-buttons a {
   color: #666;
   font-weight: bold;
   font-size: 12px;
@@ -456,11 +487,21 @@ export default {
   display: block;
   text-align: center;
   padding: 0 2px;
-  position: relative;
+  line-height: 24px;
+  height: 24px;
+  width: 90px;
 }
 
-.calendar-now-btn:hover {
+.calendar-foot .calendar-buttons a:hover {
   color: #1284e7;
+}
+
+.calendar-today-btn {
+  float: right;
+}
+
+.calendar-current-btn {
+  float: left;
 }
 </style>
 ﻿

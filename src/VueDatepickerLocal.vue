@@ -9,7 +9,7 @@
         <vue-datepicker-local-calendar v-model="dates[1]" :right="true"></vue-datepicker-local-calendar>
       </template>
       <template v-else>
-        <vue-datepicker-local-calendar v-model="dates[0]" :show-now-button="showNowButton"></vue-datepicker-local-calendar>
+        <vue-datepicker-local-calendar v-model="dates[0]" :show-today-current-button="showTodayCurrentButton"></vue-datepicker-local-calendar>
       </template>
       <div v-if="showButtons" class="datepicker__buttons">
         <button @click.prevent.stop="cancel" class="datepicker__button-cancel">{{this.local.cancelTip}}</button>
@@ -67,7 +67,9 @@ export default {
           months: 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'), // months of panel
           weeks: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'), // weeks
           cancelTip: 'Cancel', // default text for cancel button
-          submitTip: 'Confirm' // default text for submit button
+          submitTip: 'Confirm', // default text for submit button
+          todayTip: 'Today', // default text for today button
+          currentTip: 'Current' // default text for current day button
         }
       }
     },
@@ -75,7 +77,7 @@ export default {
       type: Boolean,
       default: false
     },
-    showNowButton: {
+    showTodayCurrentButton: {
       type: Boolean,
       default: false
     },
